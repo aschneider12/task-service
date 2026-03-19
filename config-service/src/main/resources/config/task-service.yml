@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://ep-flat-breeze-ah1gdy1p-pooler.c-3.us-east-1.aws.neon.tech/task-db?sslmode=require&channel_binding=require
-    username: neondb_owner
-    password: npg_KI8QFDSm6XwW
+    username: ${NEON_DB_USER}
+    password: ${NEON_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
