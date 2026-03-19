@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    config:
+      override-system-properties: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      default-zone: http://${eureka.instance.hostname}:8761/eureka/

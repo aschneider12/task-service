@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: Tasks API FIAP (ASchneider12)
+  description: API for managing tasks
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+tags:
+  - name: Tasks
+    description: Operations related to tasks
+paths:
+  /api/v1/tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Get all tasks
+      description: Retrieve a list of all tasks
+      operationId: getAllTasks
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/status'
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/PaginatedResult'
+    post:
+      tags:
+        - Tasks
+      summary: Create a new task
+      description: Create a new task with the provided details
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /api/v1/tasks/{taskId}:
+    get:
+      tags:
+        - Tasks
+      summary: Get a task by ID
+      description: Retrieve a task by its unique identifier
+      operationId: getTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task to retrieve
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: A task object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - Tasks
+      summary: Update a task by ID
+      description: Update an existing task with the provided details
+      operationId: updateTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+  /api/v1/tasks/{taskId}/cancel:
+    post:
+      tags:
+        - Tasks
+      summary: Cancel a task by ID
+      description: Cancel an existing task by its unique identifier
+      operationId: cancelTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task to cancel
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Task canceled successfully
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+  /api/v1/tasks/{taskId}/complete:
+    post:
+      tags:
+        - Tasks
+      summary: Mark a task as completed
+      description: Mark an existing task as completed by its unique identifier
+      operationId: completeTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task to mark as completed
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Task marked as completed successfully
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+  /api/v1/tasks/{taskId}/execute:
+    post:
+      tags:
+        - Tasks
+      summary: Execute a task by ID
+      description: Execute an existing task by its unique identifier
+      operationId: executeTask
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: The ID of the task to execute
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Task executed successfully
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 0
+    size:
+      name: size
+      in: query
+      schema:
+        type: integer
+        default: 10
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        default: id,asc
+    status:
+      name: status
+      in: query
+      schema:
+        type: string
+
+  schemas:
+    CreateTaskRequest:
+      type: object
+      required: [ title, description ]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+
+    UpdateTaskRequest:
+      type: object
+      required: [ title, description ]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+
+    PaginatedResult:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+
+    Task:
+      type: object
+      required: [ title, description ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - OPEN
+            - IN_PROGRESS
+            - COMPLETED
+            - CANCELED
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time

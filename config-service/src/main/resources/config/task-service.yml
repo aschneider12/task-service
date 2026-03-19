@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-flat-breeze-ah1gdy1p-pooler.c-3.us-east-1.aws.neon.tech/task-db?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_KI8QFDSm6XwW
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 10000
+      connection-timeout: 30000
+      max-lifetime: 600000
+      pool-name: HikariCP
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          format_sql: true
+          show_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8082
