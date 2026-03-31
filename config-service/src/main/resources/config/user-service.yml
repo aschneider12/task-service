@@ -1,6 +1,7 @@
+
 spring:
   datasource:
-    url: jdbc:postgresql://ep-flat-breeze-ah1gdy1p-pooler.c-3.us-east-1.aws.neon.tech/task-db?sslmode=require&channel_binding=require
+    url: jdbc:postgresql://ep-flat-breeze-ah1gdy1p-pooler.c-3.us-east-1.aws.neon.tech/users-db?sslmode=require&channel_binding=require
     username: neondb_owner
     password: npg_T2LBypcjlM1A
     driver-class-name: org.postgresql.Driver
@@ -20,4 +21,6 @@ spring:
           show-sql: true
           dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
-  port: 8082
+  port: 8081
+
+
